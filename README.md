@@ -40,10 +40,10 @@ The following results were obtained (data taken from MDU reports):
 
 ### Benchmark Results
 
-| Command     | Mean [s] | Relative |
+| Command     | Mean [s] | Ratio |
 |:------------|----------:|---------:|
-| `mdu . -v`  | 33.356    | 1.00     |
-| `du . -h`   | 74.920    | 2.25     |
+| `mdu . -v`  | 33.356    | `2.25×` faster than du     |
+| `du . -h`   | 74.920    | `2.25×` slower than MDU    |
 
 
 
