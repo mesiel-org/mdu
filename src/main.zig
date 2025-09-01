@@ -3,7 +3,7 @@
 
 const std = @import("std");
 const usage = @embedFile("usage.txt");
-pub const VERSION = "16.0";
+pub const VERSION = "1.1.1";
 
 
 /// Windows terminal size
@@ -234,7 +234,7 @@ fn processDir(self: *MDU, path: []u8, exs: []const []const u8, opts: OPTIONS) vo
                 };
 
                 const term_cols = self.ws.ws_col;
-                const size_col_width = @max(size_str.len, 9);
+                const size_col_width = @max(size_str.len, 8);
                 const padding = 1;
                 const available = if (term_cols > (size_col_width + padding))
                     term_cols - (size_col_width + padding)
@@ -242,7 +242,7 @@ fn processDir(self: *MDU, path: []u8, exs: []const []const u8, opts: OPTIONS) vo
                     full_path.len;
 
                 const truncated = full_path[0..@min(full_path.len, available)];
-                std.debug.print("{s:<9} {s}\n", .{ size_str, truncated });
+                std.debug.print("{s:<8} {s}\n", .{ size_str, truncated });
             }
         }
     }
@@ -304,12 +304,11 @@ pub fn main() !void {
     var buf_mb: [64]u8 = undefined;
 
     std.debug.print(
-        \\================= mdu Report =================
-        \\| Entry Path   | {s}
+        \\
+        \\| Entry        | {s}
         \\| Directories  | {s}
         \\| Files        | {s}
-        \\| Total Size   | {s} ({s}) 
-        \\==============================================
+        \\| Size         | {s} ({s}) 
         \\
     , .{
         path,
@@ -329,14 +328,14 @@ fn humanSize(buf: []u8, bytes: u64) ![]u8 {
     const fbytes = @as(f64, @floatFromInt(bytes));
 
     if (bytes >= @as(u64, @intFromFloat(TB)))
-        return std.fmt.bufPrint(buf, "{d:.2} TB", .{fbytes / TB});
+        return std.fmt.bufPrint(buf, "{d:.2}TB", .{fbytes / TB});
     if (bytes >= @as(u64, @intFromFloat(GB)))
-        return std.fmt.bufPrint(buf, "{d:.2} GB", .{fbytes / GB});
+        return std.fmt.bufPrint(buf, "{d:.2}GB", .{fbytes / GB});
     if (bytes >= @as(u64, @intFromFloat(MB)))
-        return std.fmt.bufPrint(buf, "{d:.2} MB", .{fbytes / MB});
+        return std.fmt.bufPrint(buf, "{d:.2}MB", .{fbytes / MB});
     if (bytes >= 1024)
-        return std.fmt.bufPrint(buf, "{d:.2} KB", .{fbytes / KB});
-    return std.fmt.bufPrint(buf, "{d} B", .{bytes});
+        return std.fmt.bufPrint(buf, "{d:.2}KB", .{fbytes / KB});
+    return std.fmt.bufPrint(buf, "{d}B", .{bytes});
 }
 
 fn commaFormat(buf: []u8, value: u64) ![]u8 {
