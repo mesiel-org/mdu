@@ -40,12 +40,20 @@
 
 ## Installation
 
-**Scripted**
+**Scripted (Recommended)**
 ```bash
-curl -sSL https://raw.githubusercontent.com/mesiel-org/mdu/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/mesiel-org/mdu/main/scripts/install.sh | bash
 ```
 
-**Manual**
+**Build from source**
+
+Requirements:
+- [Unix-based](https://en.wikipedia.org/wiki/Unix) Operating System.
+
+- [zig](https://ziglang.org/) version `0.15.1` or later.
+
+- GNU [make](https://www.gnu.org/software/make/).
+
 ```bash
 git clone https://github.com/mesiel-org/mdu.git
 cd mdu
