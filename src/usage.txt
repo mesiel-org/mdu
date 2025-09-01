@@ -1,0 +1,8 @@
+mdu [path] [options]
+
+Options:
+  -ex=<dir>      Exclude directory (repeatable)
+  -v, --verbose  Verbose output
+  -q, --quiet    Quiet mode (default)
+  -h, --help     Show help
+  --version      Show version

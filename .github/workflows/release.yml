@@ -1,0 +1,71 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.15.1
+
+      - name: Build the binaries
+        run: make release
+
+      - name: Package binaries
+        run: |
+          mkdir -p build
+          name="${GITHUB_REPOSITORY#*/}"
+
+          for dir in build/*; do
+            if [ -d "$dir" ]; then
+              base_name=$(basename "$dir")
+              temp_dir="$(mktemp -d)"
+              folder_name="${name}-${base_name}"
+              mkdir -p "$temp_dir/$folder_name"
+
+              if [[ -f "$dir/mdu.exe" ]]; then
+                binary="mdu.exe"
+                archive_name="build/${folder_name}.zip"
+                cp "$dir/$binary" "$temp_dir/$folder_name/"
+                cp LICENSE README.md "$temp_dir/$folder_name/"
+                mkdir -p "$(dirname "$archive_name")"
+                (cd "$temp_dir" && zip -r "$GITHUB_WORKSPACE/$archive_name" "$folder_name")
+                echo "Created Windows archive: $archive_name"
+              elif [[ -f "$dir/mdu" ]]; then
+                binary="mdu"
+                archive_name="build/${folder_name}.tar.gz"
+                cp "$dir/$binary" "$temp_dir/$folder_name/"
+                cp LICENSE README.md "$temp_dir/$folder_name/"
+                tar -czf "$archive_name" -C "$temp_dir" "$folder_name"
+                echo "Created archive: $archive_name"
+              else
+                echo "Skipping $dir: no binary found"
+              fi
+
+              rm -rf "$temp_dir"
+            fi
+          done
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+            gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes \
+              build/*.{tar.gz,zip} || echo "No archives to upload"
