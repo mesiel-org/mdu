@@ -40,12 +40,12 @@
 
 ## Installation
 
-**Scripted (Recommended)**
+**Installation Script (Recommended)**
 ```bash
 curl -sSL https://raw.githubusercontent.com/mesiel-org/mdu/main/scripts/install.sh | bash
 ```
 
-**Build from source**
+### Build from source
 
 Requirements:
 - [Unix-based](https://en.wikipedia.org/wiki/Unix) Operating System.
