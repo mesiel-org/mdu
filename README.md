@@ -19,22 +19,31 @@
 
 ## Performance
 
-- **Speed:** ~3× faster than GNU du on large directories.  
-- **Info:** Reports files, directories, and sizes natively.  
-- **Report:** Clean, formatted output for auditing.
+Using [hyperfine](https://github.com/sharkdp/hyperfine) benchmarking tool for better benchmarking results. Used command:
+```bash
+hyperfine --runs 1 'mdu . -v' 'du . -h'
+```
 
-**Benchmark (Linux 6.2.1-aarch64, 4 cores, 4 GB RAM):**
+The following results were obtained (data taken from MDU reports):
 
-| Metric           | **MDU**      | **GNU du**     |
-|-----------------|--------------|----------------|
-| Total Size      | 1.21 GB      | 1.2 GB         |
-| Directories     | 8,337        | N/A            |
-| Files           | 43,590       | N/A            |
-| Real Time       | 15.1 s       | 50.48 s        |
-| CPU Time        | 7.77 s       | 11.3 s         |
-| Ease of Report  | High         | Low            |
+| Metric       | Value |
+|-------------|------:|
+| Directories  | 6,725 |
+| Files        | 86,853 |
+| Size         | 2,753,484,187 (2.56 GB) |
 
-> **MDU** for full reports; GNU du for simple size checks.
+### System Specs
+
+- CPU: 4 cores
+- RAM: 4 GB
+- OS: Arch Linux 6.2.1-aarch64 GNU/Linux
+
+### Benchmark Results
+
+| Command     | Mean [s] | Relative |
+|:------------|----------:|---------:|
+| `mdu . -v`  | 33.356    | 1.00     |
+| `du . -h`   | 74.920    | 2.25     |
 
 
 
