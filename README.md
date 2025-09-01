@@ -5,7 +5,7 @@
 <h1 align="center">MDU</h1>
 
 <p align="center">
-  <strong>MDU</strong> is a fast, multithreaded, cross-platform alternative to <code>du</code>.<br>
+  <strong>MDU</strong> is a fast, multithreaded, cross-platform alternative to GNU <code>du</code> command.<br>
   Part of the <a href="https://github.com/mesiel-org">Mesiel Project</a>.
 </p>
 
